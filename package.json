@@ -1,0 +1,34 @@
+{
+  "name": "seneca-kv",
+  "version": "0.0.1",
+  "description": "Seneca plugin providing messages for a generic key-value store.",
+  "main": "kv.js",
+  "scripts": {
+    "test": "lab -P test -t 100",
+    "prettier": "prettier --write --no-semi --single-quote *.js lib/*.js test/*.js",
+    "coveralls": "lab -s -P test -r lcov | coveralls"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/voxgig/seneca-kv.git"
+  },
+  "author": "Richard Rodger (richardrodger.com)",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/voxgig/seneca-kv/issues"
+  },
+  "homepage": "https://github.com/voxgig/seneca-kv#readme",
+  "files": ["LICENSE","README.md","kv.js"],
+  "dependencies": {
+    "optioner": "1.0.x"
+  },
+  "devDependencies": {
+    "seneca-plugin-validator": "0.0.1",
+    "prettier": "^1.11.1",
+    "seneca": "plugin",
+    "code": "^5.2.0",
+    "coveralls": "^3.0.0",
+    "joi": "^13.1.2",
+    "lab": "^14"
+  }
+}
