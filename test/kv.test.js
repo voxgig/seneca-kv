@@ -1,6 +1,8 @@
 /* Copyright (c) 2018 voxgig and other contributors, MIT License */
 'use strict'
 
+const Util = require('util')
+
 const Lab = require('lab')
 const Code = require('code')
 const lab = (exports.lab = Lab.script())
@@ -153,7 +155,7 @@ lab.test('intern', fin => {
   expect(mu.decode('1')).equal(1)
   expect(mu.decode('{"a":1}')).equal({a:1})
 
-  expect(mu.decode('{"a":}')).equal('[INVALID-JSON: Unexpected token } in JSON at position 5: {"a":}]')
+  expect(mu.decode('{"a":}')).startsWith('[INVALID-JSON: Unexpected token')
 
   const circle = {}
   circle.circle = circle
@@ -173,3 +175,25 @@ lab.test('intern', fin => {
 
   fin()
 })
+
+
+/*
+lab.test('async/await', fin => {
+  async function foo() {
+    const s0 = Seneca()
+          .test('print',fin)
+          .use('..')
+
+    s0.send = Util.promisify(s0.act)
+
+    s0.act('role:kv,cmd:set,key:foox,val:barx')
+    
+    var out
+    await s0.send('role:kv,cmd:set,key:foo,val:bar')
+    out = await s0.send('role:kv,cmd:get',{key:'foo'})
+    console.log(out)
+    fin()
+  }
+  foo()
+})
+*/

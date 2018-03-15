@@ -18,17 +18,22 @@
     "url": "https://github.com/voxgig/seneca-kv/issues"
   },
   "homepage": "https://github.com/voxgig/seneca-kv#readme",
-  "files": ["LICENSE","README.md","kv.js"],
+  "files": [
+    "LICENSE",
+    "README.md",
+    "kv.js"
+  ],
   "dependencies": {
+    "json-stringify-safe": "5.0.x",
     "optioner": "1.0.x"
   },
   "devDependencies": {
     "seneca-plugin-validator": "0.0.1",
     "prettier": "^1.11.1",
     "seneca": "plugin",
-    "code": "^5.2.0",
+    "code": "^4",
     "coveralls": "^3.0.0",
-    "joi": "^13.1.2",
+    "joi": "^12",
     "lab": "^14"
   }
 }
