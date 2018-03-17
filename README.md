@@ -1,10 +1,9 @@
 # seneca-kv
 [Seneca](senecajs.org) plugin providing messages for a generic key-value store.
 
-![Npm][BadgeNpm]
-![NpmFigs][BadgeNpmFigs]
-![Travis][BadgeTravis]
-![Coveralls][BadgeCoveralls]
+[![Npm][BadgeNpm]][Npm]
+[![Travis][BadgeTravis]][Travis]
+[![Coveralls][BadgeCoveralls]][Coveralls]
 
 
 ## Quick Example
@@ -35,5 +34,7 @@ Seneca()
 
 [BadgeCoveralls]: https://coveralls.io/repos/voxgig/seneca-kv/badge.svg?branch=master&service=github
 [BadgeNpm]: https://badge.fury.io/js/seneca-kv.svg
-[BadgeNpmFigs]: https://img.shields.io/npm/dm/seneca-kv.svg?maxAge=2592000
 [BadgeTravis]: https://travis-ci.org/voxgig/seneca-kv.svg?branch=master
+[Coveralls]: https://coveralls.io/github/voxgig/seneca-kv?branch=master
+[Npm]: https://www.npmjs.com/package/seneca-kv
+[Travis]: https://travis-ci.org/voxgig/seneca-kv?branch=master
