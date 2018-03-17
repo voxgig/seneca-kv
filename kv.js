@@ -9,13 +9,12 @@ const JSS = require('json-stringify-safe')
 const Joi = Optioner.Joi
 
 const optioner = Optioner({
-  json: Joi.boolean().default(true),
+  json: Joi.boolean().default(true)
 })
-
 
 module.exports = function kv(options) {
   var seneca = this
-  
+
   seneca
     .add('role:kv,cmd:set', cmd_set)
     .add('role:kv,cmd:get', cmd_get)
@@ -23,7 +22,7 @@ module.exports = function kv(options) {
 
   const utils = intern.make_utils(options)
   const keymap = {}
-  
+
   return {
     export: {
       make_utils: intern.make_utils,
@@ -31,38 +30,36 @@ module.exports = function kv(options) {
     }
   }
 
-  
   function cmd_set(msg, reply) {
-    var key = ''+msg.key
+    var key = '' + msg.key
     var val = utils.encode(msg.val)
     keymap[key] = val
     reply()
   }
 
   function cmd_get(msg, reply) {
-    var key = ''+msg.key
+    var key = '' + msg.key
     var val = keymap[key]
     val = null != val ? utils.decode(val) : null
-    reply({key:key, val:val})
+    reply({ key: key, val: val })
   }
 
   function cmd_del(msg, reply) {
-    var key = ''+msg.key
+    var key = '' + msg.key
     delete keymap[key]
     reply()
   }
 }
 
-
-const intern = module.exports.intern = {
+const intern = (module.exports.intern = {
   make_utils: function(options) {
     const opts = optioner.check(options || {})
 
     return {
-      encode: function (value) {
-        const val = (null != value && !Object.is(NaN,value)) ? value : null
-        
-        if(opts.json) { 
+      encode: function(value) {
+        const val = null != value && !Object.is(NaN, value) ? value : null
+
+        if (opts.json) {
           try {
             return JSON.stringify(val)
           } catch (e) {
@@ -73,16 +70,16 @@ const intern = module.exports.intern = {
         return val
       },
 
-      decode: function (val) {
-        if (!val || Object.is(NaN,val)) return null
+      decode: function(val) {
+        if (!val || Object.is(NaN, val)) return null
 
-        if(opts.json) {
+        if (opts.json) {
           var str = val.toString()
 
           try {
             return JSON.parse(str)
           } catch (e) {
-            return '[INVALID-JSON: '+e.message+': '+str+']'
+            return '[INVALID-JSON: ' + e.message + ': ' + str + ']'
           }
         }
 
@@ -95,10 +92,9 @@ const intern = module.exports.intern = {
     seneca_instance
       .act('role:kv,cmd:set,key:k1,val:v1')
       .act('role:kv,cmd:set,key:k2,val:v2', function() {
-        this
-          .act('role:kv,cmd:get,key:k1', function(ignore, out) {
-            Assert.equal(out.val, 'v1', 'key "k1" should have value "v1"')
-          })
+        this.act('role:kv,cmd:get,key:k1', function(ignore, out) {
+          Assert.equal(out.val, 'v1', 'key "k1" should have value "v1"')
+        })
           .act('role:kv,cmd:get,key:k2', function(ignore, out) {
             Assert.equal(out.val, 'v2', 'key "k2" should have value "v2"')
           })
@@ -106,17 +102,21 @@ const intern = module.exports.intern = {
             Assert.equal(out.val, null, 'key "k0" should have value null')
           })
           .act('role:kv,cmd:del,key:k1', function(ignore) {
-            this
-              .act('role:kv,cmd:get,key:k1', function(ignore, out) {
-                Assert.equal(
-                  out.val, null, 'key "k1" should have value null after deletion')
-              })
-              .act('role:kv,cmd:get,key:k2', function(ignore, out) {
-                Assert.equal(
-                  out.val, 'v2', 'key "k2" should continue to have value "v2"')
-                fin()
-              })
+            this.act('role:kv,cmd:get,key:k1', function(ignore, out) {
+              Assert.equal(
+                out.val,
+                null,
+                'key "k1" should have value null after deletion'
+              )
+            }).act('role:kv,cmd:get,key:k2', function(ignore, out) {
+              Assert.equal(
+                out.val,
+                'v2',
+                'key "k2" should continue to have value "v2"'
+              )
+              fin()
+            })
           })
       })
   }
-}
+})
