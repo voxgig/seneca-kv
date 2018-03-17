@@ -6,6 +6,7 @@
 [![Coveralls][BadgeCoveralls]][Coveralls]
 
 
+
 ## Quick Example
 
 ```
