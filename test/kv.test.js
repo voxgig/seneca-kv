@@ -111,7 +111,7 @@ lab.test('export', fin => {
 })
 
 lab.test('intern', fin => {
-  const mu = Plugin.intern.make_utils({ json: true })
+  const mu = Plugin.intern.make_utils({ json: true, ignore: 'but-allow' })
 
   expect(mu.encode(null)).equal('null')
   expect(mu.encode(void 0)).equal('null')
