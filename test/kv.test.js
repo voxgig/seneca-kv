@@ -33,27 +33,7 @@ lab.test('basic', fin => {
     .test(fin)
     .use('..')
     .ready(function() {
-      this
-        .act('role:kv,cmd:set,key:k1,val:v1')
-        .act('role:kv,cmd:set,key:k2,val:v2', function() {
-          this
-            .act('role:kv,cmd:get,key:k1', function(ignore, out) {
-              expect(out.val).equal('v1')
-            })
-            .act('role:kv,cmd:get,key:k2', function(ignore, out) {
-              expect(out.val).equal('v2')
-            })
-            .act('role:kv,cmd:del,key:k1', function(ignore) {
-              this
-                .act('role:kv,cmd:get,key:k1', function(ignore, out) {
-                  expect(out.val).equal(null)
-                })
-                .act('role:kv,cmd:get,key:k2', function(ignore, out) {
-                  expect(out.val).equal('v2')
-                  fin()
-                })
-            })
-        })
+      this.export('kv').basic_test(this, fin)
     })
 })
 
@@ -165,35 +145,20 @@ lab.test('intern', fin => {
   const munj = Plugin.intern.make_utils({json:false})
   expect(munj.encode({a:1})).equal({a:1})
   expect(munj.decode('{"a":1}')).equal('{"a":1}')
+  expect(munj.encode(null)).equal(null)
+  expect(munj.encode(void 0)).equal(null)
+  expect(munj.encode(NaN)).equal(null)
 
+  // same as {json: true}
   const muno = Plugin.intern.make_utils()
-  expect(muno.encode({a:1})).equal({a:1})
-  expect(muno.decode('{"a":1}')).equal('{"a":1}')
-  expect(muno.encode(null)).equal(null)
-  expect(muno.encode(void 0)).equal(null)
-  expect(muno.encode(NaN)).equal(null)
+  expect(muno.encode(null)).equal('null')
+  expect(muno.encode(void 0)).equal('null')
+  expect(muno.encode(NaN)).equal('null')
+  expect(muno.encode('a')).equal('"a"')
+  expect(muno.encode(1)).equal('1')
+  expect(muno.encode({a:1})).equal('{"a":1}')
 
   fin()
 })
 
 
-/*
-lab.test('async/await', fin => {
-  async function foo() {
-    const s0 = Seneca()
-          .test('print',fin)
-          .use('..')
-
-    s0.send = Util.promisify(s0.act)
-
-    s0.act('role:kv,cmd:set,key:foox,val:barx')
-    
-    var out
-    await s0.send('role:kv,cmd:set,key:foo,val:bar')
-    out = await s0.send('role:kv,cmd:get',{key:'foo'})
-    console.log(out)
-    fin()
-  }
-  foo()
-})
-*/

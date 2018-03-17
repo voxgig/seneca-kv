@@ -1,6 +1,6 @@
 {
   "name": "seneca-kv",
-  "version": "0.0.2",
+  "version": "0.0.3",
   "description": "Seneca plugin providing messages for a generic key-value store.",
   "main": "kv.js",
   "scripts": {
@@ -28,12 +28,12 @@
     "optioner": "1.0.x"
   },
   "devDependencies": {
-    "seneca-plugin-validator": "0.0.1",
-    "prettier": "^1.11.1",
+    "seneca-plugin-validator": "0",
+    "prettier": "1",
     "seneca": "plugin",
-    "code": "^4",
-    "coveralls": "^3.0.0",
-    "joi": "^12",
-    "lab": "^14"
+    "code": "4",
+    "coveralls": "3",
+    "joi": "12",
+    "lab": "14"
   }
 }

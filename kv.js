@@ -1,6 +1,7 @@
 /* Copyright (c) 2018 voxgig and other contributors, MIT License */
 'use strict'
 
+const Assert = require('assert')
 
 const Optioner = require('optioner')
 const JSS = require('json-stringify-safe')
@@ -20,13 +21,13 @@ module.exports = function kv(options) {
     .add('role:kv,cmd:get', cmd_get)
     .add('role:kv,cmd:del', cmd_del)
 
-  const opts = optioner.check(options)
-  const utils = intern.make_utils(opts)
+  const utils = intern.make_utils(options)
   const keymap = {}
   
   return {
     export: {
-      make_utils: intern.make_utils
+      make_utils: intern.make_utils,
+      basic_test: intern.basic_test
     }
   }
 
@@ -54,9 +55,9 @@ module.exports = function kv(options) {
 
 
 const intern = module.exports.intern = {
-  make_utils: function(opts) {
-    opts = opts || {}
-    
+  make_utils: function(options) {
+    const opts = optioner.check(options || {})
+
     return {
       encode: function (value) {
         const val = (null != value && !Object.is(NaN,value)) ? value : null
@@ -88,5 +89,34 @@ const intern = module.exports.intern = {
         return val
       }
     }
+  },
+
+  basic_test: function(seneca_instance, fin) {
+    seneca_instance
+      .act('role:kv,cmd:set,key:k1,val:v1')
+      .act('role:kv,cmd:set,key:k2,val:v2', function() {
+        this
+          .act('role:kv,cmd:get,key:k1', function(ignore, out) {
+            Assert.equal(out.val, 'v1', 'key "k1" should have value "v1"')
+          })
+          .act('role:kv,cmd:get,key:k2', function(ignore, out) {
+            Assert.equal(out.val, 'v2', 'key "k2" should have value "v2"')
+          })
+          .act('role:kv,cmd:get,key:k0', function(ignore, out) {
+            Assert.equal(out.val, null, 'key "k0" should have value null')
+          })
+          .act('role:kv,cmd:del,key:k1', function(ignore) {
+            this
+              .act('role:kv,cmd:get,key:k1', function(ignore, out) {
+                Assert.equal(
+                  out.val, null, 'key "k1" should have value null after deletion')
+              })
+              .act('role:kv,cmd:get,key:k2', function(ignore, out) {
+                Assert.equal(
+                  out.val, 'v2', 'key "k2" should continue to have value "v2"')
+                fin()
+              })
+          })
+      })
   }
 }
