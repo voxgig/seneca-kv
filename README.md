@@ -1,10 +1,10 @@
 # seneca-kv
 [Seneca](senecajs.org) plugin providing messages for a generic key-value store.
 
-[![Npm][BadgeNpm]][Npm]
-[![NpmFigs][BadgeNpmFigs]][Npm]
-[![Travis][BadgeTravis]][Travis]
-[![Coveralls][BadgeCoveralls]][Coveralls]
+[![Npm][BadgeNpm]]
+[![NpmFigs][BadgeNpmFigs]]
+[![Travis][BadgeTravis]]
+[![Coveralls][BadgeCoveralls]]
 
 
 ## Quick Example
